@@ -1,59 +1,45 @@
-#include <windows.h>
-#include <stdio.h>
-#include <conio.h>
+#include "project.h"
+#include "character.h"
 
-int read(char *board)
-{	
-	int result = -1;
-	for(int i = 0; board[i] != '\0'; i++)
-	{
-		if(board[i] == 'W')
-			result = i;
-	}
-	return result;
+void get_input(BRD *board, char c)
+{
+    if(c == 'q')
+        {
+            move(board, -1, 0);
+        }
+        else if(c == 'd')
+        {
+            move(board, 1, 0);
+        }
+        else if(c == 'z')
+        {
+            move(board, 0, -1);
+        }
+        else if(c == 's')
+        {
+            move(board, 0, 1);
+        }
 }
 
-void reset(char *board)
+void move(BRD *board, int dx, int dy)
 {
-	for(int i = 0; i < strlen(board); i++)
-		printf("\b");
-}
+	int y = board->poschar[POSY];
+    int x = board->poschar[POSX];
 
-int character(void)
-{
-	char board[] = "       W     ";
-	printf("%s", board);
+	int new_y = y + dy;
+	int new_x = x + dx;
 
-	int temp;
-	int c;
-	while((c = getch()) != 27)
-	{
-		if(c == 'q')
-		{
-			temp = read(board);
-			board[temp] = ' ';
+    if(new_x < 0 || new_x >= board->width || new_y < 0 || new_y >= board->height)
+        return;
+    
+	char target = board->data[new_y][new_x];
+	if(target != ' ' && target != '*')
+		return;
 
-			if(temp == 0)
-				temp = strlen(board) - 1;
-			else
-				temp--;
-			board[temp] = 'W';
-			reset(board);
-			printf("%s", board);
-		}
-		else if(c == 'd')
-		{
-			temp = read(board);
-			board[temp] = ' ';
+	board->data[new_y][new_x] = '#';
+    board->data[y][x] = ' ';
+    board->poschar[POSX] = new_x;
+	board->poschar[POSY] = new_y;
 
-			if(temp == strlen(board) - 1)
-				temp = 0;
-			else
-				temp++;
-
-			board[temp] = 'W';
-			reset(board);
-			printf("%s", board);
-		}
-	}
+	//mouche win
 }
