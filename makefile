@@ -1,5 +1,5 @@
 # Nom de l'exécutable final
-NAME = my_program
+NAME = mouche
 
 # Compilateur
 CC = gcc

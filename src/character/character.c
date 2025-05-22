@@ -30,7 +30,7 @@ void move(BRD *board, int dx, int dy)
 	int new_x = x + dx;
 
     if(new_x < 0 || new_x >= board->width || new_y < 0 || new_y >= board->height)
-        return;
+		return;
     
 	char target = board->data[new_y][new_x];
 	if(target != ' ' && target != '*')
