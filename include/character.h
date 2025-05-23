@@ -3,6 +3,6 @@
 
 int get_input(BRD *board, char c);
 
-int move(BRD *board, int dx, int dy);
+int movechar(BRD *board, int dx, int dy);
 
 #endif
