@@ -7,7 +7,7 @@ parse_map()
     int     fd;
     int     wc = 0;
 
-    if (fd = open(MAP_PATH) == -1)
+    if (fd = open(MAP_PATH, O_RDONLY) == -1)
         return (1);
 
     if (read(MAP_PATH, buf, sizeof(char)) == -1)
