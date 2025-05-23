@@ -13,5 +13,5 @@ typedef struct
 } BRD;
 
 #include "character.h"
-#include "get_input.h"
+#include "board.h"
 //etc
