@@ -18,38 +18,27 @@ char    **read_map(BRD *board, int fd)
     char    *newline = get_next_line(fd);
 
     while (newline){
-        map = realloc_map(map, nbrlines);
-        map[nbrlines] = newline;
-        nbrlines++;
+        if (!is_empty_line(newline)){
+            map = realloc_map(map, nbrlines);
+            map[nbrlines] = newline;
+            nbrlines++;
+        }
         newline = get_next_line(fd);
     }
     board->height = nbrlines;
-    if (nbrlines)
-        board->width = strlen(map[0]);
-    else
-        board->width = 0;
     return (map);
 }
 
-void    parse_map(BRD *board)
+int    parse_map(BRD *board)
 {
     char    buf[1];
     int     fd;
 
     if ((fd = open(MAP_PATH, O_RDONLY)) == -1)
-        return;
+        return(0);
     board->data = read_map(board, fd);
     close(fd);
-    if (!is_map_valid(board, maptest))
-        printf("error, map is not valid\n");
-    else
-        printf("success, map is valid\n");
-}
-
-int main()
-{
-    BRD board;
-
-    parse_map(&board);
-    return (0);
+    if (!is_valid_map(board, board->data))
+        return (0);
+    return (1);
 }

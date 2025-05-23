@@ -8,9 +8,11 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-# define MAP_PATH "../../maps/map1.txt"
+//# define MAP_PATH "../../maps/map1.txt"
+# define MAP_PATH "test"
 
 int     is_empty_line(char *str);
+int     is_valid_map(BRD *board, char **map);
 char    *strjoin(const char *s1, const char *s2);
 char    *get_next_line(int fd);
 
