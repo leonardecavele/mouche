@@ -92,41 +92,33 @@ int idle(BRD *board, int c_y, int c_x, int m_y, int m_x)
 
 int y_axis(BRD *board, int c_y, int c_x, int m_y, int m_x)
 {
-	int range = range_calc(c_y, c_x, m_y, m_x);
-	int new_y = 0;
+    int range = range_calc(c_y, c_x, m_y, m_x);
+    int new_x = 0;
 
-	//condition d'execution
-	if(c_y >= m_y - 1 && c_y <= m_y + 1)
-		{
-			if(abs(m_x - 0) > abs(m_x - (board->width - 1)))
-			{
-				new_op(&new_y, range, c_y, m_y);
-				if(move(board, -1, new_y)) {
-					return 0;
-				}
-			}
-			else if(abs(m_x - 0) < abs(m_x - (board->width - 1)))
-			{
-				new_op(&new_y, range, c_x, m_x);
-				if(move(board, 1, new_y)) {
-					return 0;
-				}
-			}
-			else
-			{
-                new_op(&new_y, range, c_x, m_x);
-                int r = rand() % 2;
-                if (r > 0) {
-                    if(move(board, -1, new_y))
-                        return 0;
-				}
-                else
-                    if(move(board, 1, new_y)) {
-                        return 0;
-					}
-            }
-		}
-	return 1;
+    //condition
+    if(c_y >= m_y - 1 && c_y <= m_y + 1)
+    {
+        if(c_x < m_x)
+        {
+            new_op(&new_x, range, c_x, m_x);
+            if(move(board, new_x, 0))
+                return 0;
+        }
+        else if(c_x > m_x)
+        {
+            new_op(&new_x, range, c_x, m_x);
+            if(move(board, new_x, 0))
+                return 0;
+        }
+        else
+        {
+            new_x = (rand() % 2 == 0) ? -1 : 1;
+            if(move(board, new_x, 0))
+                return 0;
+        }
+    }
+
+    return 1;
 }
 
 void new_op(int *new, int range, int cpos, int mpos)
@@ -134,18 +126,18 @@ void new_op(int *new, int range, int cpos, int mpos)
     if(range < SUPER_FEAR)
     {
         if(cpos < mpos) {
-            *new = -1;
+            *new = 1;
 		}
         else if(cpos > mpos) {
-            *new = 1;
+            *new = -1;
         }
 	}
     else if(range < MEGA_FEAR) {
             if(cpos < mpos) {
-                *new = -1;
+                *new = 1;
 			}
             else if (cpos > mpos) {
-                *new = 1;
+                *new = -1;
 			}
 	}
 }
@@ -153,120 +145,73 @@ void new_op(int *new, int range, int cpos, int mpos)
 int x_axis(BRD *board, int c_y, int c_x, int m_y, int m_x)
 {
     int range = range_calc(c_y, c_x, m_y, m_x);
-    int new_x = 0;
+    int new_y = 0;
 
-    //condition d'execution
+    //condition
     if(c_x >= m_x - 1 && c_x <= m_x + 1)
+    {
+        if(c_y < m_y)
         {
-            if(abs(m_y - 0) > abs(m_y - (board->height - 1)))
-            {
-                new_op(&new_x, range, c_y, m_y);
-                if(move(board, -1, new_x)) {
-                    return 0;
-				}
-            }
-            else if(abs(m_y - 0) < abs(m_y - (board->height - 1)))
-            {
-                new_op(&new_x, range, c_y, m_y);
-                if(move(board, 1, new_x)) {
-                    return 0;
-				}
-            }
-			else
-			{
-				new_op(&new_x, range, c_x, m_x);
-				int r = rand() % 2;
-				if (r > 0) {
-					if(move(board, -1, new_x)) {
-						return 0;
-					}
-				}
-				else {
-					if(move(board, 1, new_x))
-						return 0;
-				}
-			}
+            new_op(&new_y, range, c_y, m_y);
+            if(move(board, 0, new_y))
+                return 0;
         }
+        else if(c_y > m_y)
+        {
+            new_op(&new_y, range, c_y, m_y);
+            if(move(board, 0, new_y))
+                return 0;
+        }
+        else
+        {
+            new_y = (rand() % 2 == 0) ? -1 : 1;
+            if(move(board, 0, new_y))
+                return 0;
+        }
+    }
+
     return 1;
 }
 
 int corner(BRD *board, int c_y, int c_x, int m_y, int m_x)
 {
-    int r = rand() % 2;
+    int dx = 0, dy = 0;
 
     if (m_y == 1 && m_x == 1) //haut gauche
     {
-        if (range_calc(c_y, c_x, 1, board->width - 2) < range_calc(c_y, c_x, board->height - 2, 1)) {
-            if (move(board, 0, 1)) //bas
-                return 0;
-        } else if (range_calc(c_y, c_x, 1, board->width - 2) > range_calc(c_y, c_x, board->height - 2, 1)) {
-            if (move(board, 1, 0)) //droite
-                return 0;
-        } else {
-            if (r > 0) {
-                if (move(board, 0, 1)) //bas
-                    return 0;
-            } else {
-                if (move(board, 1, 0)) //droite
-                    return 0;
-            }
-        }
-    }
-    else if (m_y == board->height - 2 && m_x == 1) //bas gauche
-    {
-        if (range_calc(c_y, c_x, 1, 1) < range_calc(c_y, c_x, board->height - 2, board->width - 2)) {
-            if (move(board, 1, 0)) //droite
-                return 0;
-        } else if (range_calc(c_y, c_x, 1, 1) > range_calc(c_y, c_x, board->height - 2, board->width - 2)) {
-            if (move(board, 0, -1)) //haut
-                return 0;
-        } else {
-            if (r > 0) {
-                if (move(board, 0, -1)) //haut
-                    return 0;
-            } else {
-                if (move(board, 1, 0)) //droite
-                    return 0;
-            }
-        }
-    }
-    else if (m_y == board->height - 2 && m_x == board->width - 2) //bas droite
-    {
-        if (range_calc(c_y, c_x, 1, board->height - 2) < range_calc(c_y, c_x, 1, board->width - 2)) {
-            if (move(board, 0, -1)) //haut
-                return 0;
-        } else if (range_calc(c_y, c_x, 1, board->height - 2) > range_calc(c_y, c_x, 1, board->width - 2)) {
-            if (move(board, -1, 0)) //gauche
-                return 0;
-        } else {
-            if (r > 0) {
-                if (move(board, 0, -1)) //haut
-                    return 0;
-            } else {
-                if (move(board, -1, 0)) //gauche
-                    return 0;
-            }
-        }
+        if (c_y <= m_y && c_x <= m_x) { dx = 1; dy = 1; }
+        else if (c_y <= m_y) { dy = 1; }
+        else if (c_x <= m_x) { dx = 1; }
+        else { dx = 1; dy = 1; }
     }
     else if (m_y == 1 && m_x == board->width - 2) //haut droite
     {
-        if (range_calc(c_y, c_x, 1, 1) < range_calc(c_y, c_x, board->height - 2, board->width - 2)) {
-            if (move(board, 0, 1)) //bas
-                return 0;
-        } else if (range_calc(c_y, c_x, 1, 1) > range_calc(c_y, c_x, board->height - 2, board->width - 2)) {
-            if (move(board, -1, 0)) //gauche
-                return 0;
-        } else {
-            if (r > 0) {
-                if (move(board, 0, 1)) //bas
-                    return 0;
-            } else {
-                if (move(board, -1, 0)) //gauche
-                    return 0;
-            }
-        }
+        if (c_y <= m_y && c_x >= m_x) { dx = -1; dy = 1; }
+        else if (c_y <= m_y) { dy = 1; }
+        else if (c_x >= m_x) { dx = -1; }
+        else { dx = -1; dy = 1; }
+    }
+    else if (m_y == board->height - 2 && m_x == 1) //bas gauche
+    {
+        if (c_y >= m_y && c_x <= m_x) { dx = 1; dy = -1; }
+        else if (c_y >= m_y) { dy = -1; }
+        else if (c_x <= m_x) { dx = 1; }
+        else { dx = 1; dy = -1; }
+    }
+    else if (m_y == board->height - 2 && m_x == board->width - 2) //bas droite
+    {
+        if (c_y >= m_y && c_x >= m_x) { dx = -1; dy = -1; }
+        else if (c_y >= m_y) { dy = -1; }
+        else if (c_x >= m_x) { dx = -1; }
+        else { dx = -1; dy = -1; }
+    }
+    else {
+        return 1; //pas dans un coin
     }
 
+    //tente le move
+    if (move(board, dx, dy))
+        return 0;
     return 1;
 }
 
@@ -358,8 +303,6 @@ void mouche(BRD *board, char c)
 
 	int m_y = board->posmch[POSY];
 	int m_x = board->posmch[POSX];
-
-	//printf("DEBUG: m_x = %d, m_y = %d\n", m_x, m_y);
 
 	if(!(corner(board, c_y, c_x, m_y, m_x))) {
 		printf("corner\n");
