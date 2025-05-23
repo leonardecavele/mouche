@@ -32,16 +32,3 @@ char    *get_next_line(int fd)
     else
         return (NULL);
 }
-
-int main()
-{
-    char    *line;
-    int     fd;
-
-    if ((fd = open("test", O_RDONLY)) == -1)
-        return (1);
-    while (line = get_next_line(fd))
-        printf("line: %s\n", line);
-    close(fd);
-    return (0);
-}
