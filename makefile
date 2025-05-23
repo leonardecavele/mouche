@@ -11,7 +11,9 @@ INC_DIR = include
 
 # Fichiers sources
 SRCS = $(SRC_DIR)/main.c \
-       $(CHAR_DIR)/character.c
+	   $(SRC_DIR)/board.c \
+       $(SRC_DIR)/character.c \
+	   $(SRC_DIR)/mouche.c
 
 # Fichiers objets
 OBJS = $(SRCS:.c=.o)

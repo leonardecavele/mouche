@@ -1,14 +1,31 @@
 #include <conio.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 #include "project.h"
+
+void flush_input_buffer();
+
+void win();
+
+void flush_input_buffer()
+{
+    while (_kbhit()) getch();
+}
+
+void win(int height)
+{
+	reset_board(height);
+	printf("\033[H\033[J");
+	exit(0);
+}
 
 int main(void)
 {
 	//BRD *board = import function
 
 	BRD board;
-	board.width = 10;
+	board.width = 16;
 	board.height = 7;
 	board.poschar[POSY] = 1;
 	board.poschar[POSX] = 2;
@@ -19,14 +36,14 @@ int main(void)
 	for(int y = 0; y < board.height; y++)
 		board.data[y] = malloc(board.width * sizeof(char));
 
-	char init[7][10] = {
-		{'-','-','-','-','-','-','-','-','-','-'},
-		{'|',' ','#',' ',' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ','*',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ',' ',' ','|'},
-		{'-','-','-','-','-','-','-','-','-','-'},
+	char init[7][16] = {
+		{'-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'},
+		{'|',' ','#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'},
+		{'|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'},
+		{'|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'},
+		{'|',' ',' ',' ',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ','|'},
+		{'|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'},
+		{'-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'},
 	};
 
 	for(int y = 0; y < board.height; y++)
@@ -36,28 +53,14 @@ int main(void)
 	char c;
 	while((c = getch()) != 27)
 	{
-		//Sleep(250);
-		get_input(&board, c);
-		
-		//reset board
-
-		for(int i = 0; i < board.height; i++)
-		{
-			printf("\033[A");
-			printf("\033[2K");
-		}
-
-		//print board
-		for(int i = 0; i < board.height; i++)
-		{
-			printf("\n");
-			for(int j = 0; j < board.width; j++)
-				printf("%c", board.data[i][j]);
-		}
-		
-
 		//mouche
 
-		//reset et reprint
+		Sleep(100);
+		int win_con = get_input(&board, c);
+		flush_input_buffer();
+		reset_board(board.height);
+		print_board(board.height, board.width, board.data);
+		if (!win_con)
+			win(board.height);
 	}
 }

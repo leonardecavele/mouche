@@ -13,4 +13,6 @@ typedef struct
 } BRD;
 
 #include "character.h"
+#include "board.h"
+#include "mouche.h"
 //etc
