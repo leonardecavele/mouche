@@ -1,4 +1,19 @@
-#include "../../include/parsing.h"
+#include "../../include/project.h"
+
+int     is_white_space(char c)
+{
+    if (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v' || c == '\f')
+        return (1);
+    return (0);
+}
+
+int     is_empty_line(char *str)
+{
+    for (int i = 0; str[i]; i++)
+        if (!iswhitespace(str[i]))
+            return (0);
+    return (1);
+}
 
 char    *strjoin(const char *s1, const char *s2)
 {

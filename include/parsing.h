@@ -8,8 +8,9 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-# define MAP_PATH "../../maps/map"
+# define MAP_PATH "../../maps/map1.txt"
 
+int     is_empty_line(char *str);
 char    *strjoin(const char *s1, const char *s2);
 char    *get_next_line(int fd);
 

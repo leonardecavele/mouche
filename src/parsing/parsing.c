@@ -1,4 +1,4 @@
-#include "../../include/parsing.h"
+#include "../../include/project.h"
 
 char    **realloc_map(char **map, int nbrlines)
 {
@@ -11,7 +11,7 @@ char    **realloc_map(char **map, int nbrlines)
     return (ret);
 }
 
-char    **read_map(int fd)
+char    **read_map(BRD *board, int fd)
 {
     char    **map;
     int     nbrlines = 0;
@@ -23,20 +23,33 @@ char    **read_map(int fd)
         nbrlines++;
         newline = get_next_line(fd);
     }
+    board->height = nbrlines;
+    if (nbrlines)
+        board->width = strlen(map[0]);
+    else
+        board->width = 0;
     return (map);
 }
 
-void    parse_map()
+void    parse_map(BRD *board)
 {
     char    buf[1];
-
     int     fd;
-    int     wc = 0;
 
-    char    **maptest;
-
-    if ((fd = open("./test", O_RDONLY)) == -1)
+    if ((fd = open(MAP_PATH, O_RDONLY)) == -1)
         return;
-    maptest = read_map(fd);
+    board->data = read_map(board, fd);
     close(fd);
+    if (!is_map_valid(board, maptest))
+        printf("error, map is not valid\n");
+    else
+        printf("success, map is valid\n");
+}
+
+int main()
+{
+    BRD board;
+
+    parse_map(&board);
+    return (0);
 }
