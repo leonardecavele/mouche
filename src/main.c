@@ -1,66 +1,63 @@
 #include <conio.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 #include "project.h"
 
-void flush_input_buffer();
+int parse_map(BRD *board); //to do
 
-void win();
+void flush_input_buffer(); //todo
 
-void flush_input_buffer()
+void anim(); //todo
+
+void win(); //todo
+
+void flush_input_buffer() //todo
 {
     while (_kbhit()) getch();
 }
 
-void win(int height)
+void anim() //tdoo
 {
-	reset_board(height);
-	printf("\033[H\033[J");
+	reset_board();
+	for(int i = 0; i < 4; i++)
+	{
+		if (i % 2 == 0)
+			printf("\033[32mGG!\033[0m");
+		else
+			printf("\r\033[2K");
+		fflush(stdout);
+		Sleep(300);
+	}
+}
+
+void win() //todo
+{
+	anim();
 	exit(0);
 }
 
 int main(void)
 {
-	//BRD *board = import function
-
+	srand(time(NULL));
 	BRD board;
-	board.width = 16;
-	board.height = 7;
-	board.poschar[POSY] = 1;
-	board.poschar[POSX] = 2;
-	board.posmch[POSY] = 4;
-	board.posmch[POSX] = 3;
 
-	board.data = malloc(board.height * sizeof(char *));
-	for(int y = 0; y < board.height; y++)
-		board.data[y] = malloc(board.width * sizeof(char));
-
-	char init[7][16] = {
-		{'-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'},
-		{'|',' ','#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|'},
-		{'-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-'},
-	};
-
-	for(int y = 0; y < board.height; y++)
-		for(int x = 0; x < board.width; x++)
-			board.data[y][x] = init[y][x];
+    if (!parse_map(&board)) {
+        fprintf(stderr, "Parsing Error. Check map validity\n");
+        return (1);
+    }
 
 	char c;
 	while((c = getch()) != 27)
 	{
-		//mouche
-
-		Sleep(100);
+		mouche(&board, c);
 		int win_con = get_input(&board, c);
 		flush_input_buffer();
 		reset_board(board.height);
 		print_board(board.height, board.width, board.data);
 		if (!win_con)
-			win(board.height);
+			win();
 	}
+	reset_board();
 }

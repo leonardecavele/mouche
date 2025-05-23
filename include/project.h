@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PROJECT_H
+#define PROJECT_H
 
 #define POSX 0
 #define POSY 1
@@ -15,4 +16,6 @@ typedef struct
 #include "character.h"
 #include "board.h"
 #include "mouche.h"
-//etc
+#include "parsing.h"
+
+#endif

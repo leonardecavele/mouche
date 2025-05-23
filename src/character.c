@@ -6,24 +6,24 @@ int get_input(BRD *board, char c)
 	int win;
     if(c == 'q')
         {
-            win = move(board, -1, 0);
+            win = movechar(board, -1, 0);
         }
         else if(c == 'd')
         {
-            win = move(board, 1, 0);
+            win = movechar(board, 1, 0);
         }
         else if(c == 'z')
         {
-            win = move(board, 0, -1);
+            win = movechar(board, 0, -1);
         }
         else if(c == 's')
         {
-            win = move(board, 0, 1);
+            win = movechar(board, 0, 1);
         }
 		return win;
 }
 
-int move(BRD *board, int dx, int dy)
+int movechar(BRD *board, int dx, int dy)
 {
 	int y = board->poschar[POSY];
     int x = board->poschar[POSX];
@@ -40,6 +40,7 @@ int move(BRD *board, int dx, int dy)
 
 	board->data[new_y][new_x] = '#';
     board->data[y][x] = ' ';
+
     board->poschar[POSX] = new_x;
 	board->poschar[POSY] = new_y;
 

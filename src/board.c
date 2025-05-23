@@ -1,15 +1,10 @@
 #include <stdio.h>
 #include "project.h"
 
-void reset_board(int height)
+void reset_board()
 {
-	printf("\033[%dA", height);
-	for(int i = 0; i < height; i++)
-    {
-        printf("\033[2K");
-		printf("\033[1B");
-    }
-	printf("\033[%dA", height);
+	printf("\033[H\033[J");
+    fflush(stdout);
 }
 
 void print_board(int height, int width, char **data)
