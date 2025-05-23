@@ -42,3 +42,22 @@ int    parse_map(BRD *board)
         return (0);
     return (1);
 }
+
+// int main()
+// {
+//     BRD board;
+
+//     if (!parse_map(&board))
+//         printf("Error\n");
+//     else{    
+//         printf("Success\n");
+//         for (int i = 0; i < board.height; i++)
+//             printf("%s\n", board.data[i]);
+//         printf("width: %d\n", board.width);
+//         printf("height: %d\n", board.height);
+//         printf("poschar: (x)%d (y)%d\n", board.poschar[0], board.poschar[1]);
+//         printf("posmch: (x)%d (y)%d\n", board.posmch[0], board.posmch[1]);
+
+//     }
+//     return (0);
+// }
