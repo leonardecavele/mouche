@@ -16,6 +16,8 @@ typedef struct
 #include "character.h"
 #include "board.h"
 #include "mouche.h"
-//etc
+#include "parsing.h"
+
+int parse_map(BRD *board); //to do
 
 #endif
