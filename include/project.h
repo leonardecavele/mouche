@@ -15,4 +15,7 @@ typedef struct
 
 #include "parsing.h"
 //etc
+
+int parse_map(BRD *board);
+
 #endif

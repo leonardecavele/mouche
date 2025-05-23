@@ -16,7 +16,6 @@ char    **read_map(BRD *board, int fd)
     char    **map;
     int     nbrlines = 0;
     char    *newline = get_next_line(fd);
-
     while (newline){
         if (!is_empty_line(newline)){
             map = realloc_map(map, nbrlines);
