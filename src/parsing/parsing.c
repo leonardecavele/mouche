@@ -30,7 +30,6 @@ char    **read_map(BRD *board, int fd)
 
 int    parse_map(BRD *board)
 {
-    char    buf[1];
     int     fd;
 
     if ((fd = open(MAP_PATH, O_RDONLY)) == -1)

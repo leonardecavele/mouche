@@ -58,7 +58,7 @@ int     is_valid_map(BRD *board, char **map)
     }
     if (nbrchar != 1 || nbrmch != 1)
         return (0);
-    if (i == board->height || !is_minus_only(map[i]) || strlen(map[i]) != board->width)
+    if (i == board->height || !is_minus_only(map[i]) || (int)strlen(map[i]) != board->width)
         return (0);
     i++;
     while (i < board->height && is_empty_line(map[i]))

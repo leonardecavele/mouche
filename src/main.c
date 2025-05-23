@@ -5,6 +5,8 @@
 #include <windows.h>
 #include "project.h"
 
+int parse_map(BRD *board); //to do
+
 void flush_input_buffer(); //todo
 
 void anim(); //todo

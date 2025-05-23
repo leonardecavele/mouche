@@ -13,7 +13,11 @@ INC_DIR = include
 SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/board.c \
        $(SRC_DIR)/character.c \
-	   $(SRC_DIR)/mouche.c
+	   $(SRC_DIR)/mouche.c \
+	   $(SRC_DIR)/parsing/get_next_line.c \
+	   $(SRC_DIR)/parsing/is_valid_map.c \
+	   $(SRC_DIR)/parsing/parsing.c \
+	   $(SRC_DIR)/parsing/utils.c \
 
 # Fichiers objets
 OBJS = $(SRCS:.c=.o)

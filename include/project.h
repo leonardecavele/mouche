@@ -18,6 +18,4 @@ typedef struct
 #include "mouche.h"
 #include "parsing.h"
 
-int parse_map(BRD *board); //to do
-
 #endif
