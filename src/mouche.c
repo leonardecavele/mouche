@@ -305,28 +305,28 @@ void mouche(BRD *board, char c)
 	int m_x = board->posmch[POSX];
 
 	if(!(corner(board, c_y, c_x, m_y, m_x))) {
-		printf("corner\n");
+		//printf("corner\n");
 		return;
 	}
 	else if(!(y_axis(board, c_y, c_x, m_y, m_x))) {
-		printf("y\n");
+		//printf("y\n");
 		return;
 	}
 	else if(!(x_axis(board, c_y, c_x, m_y, m_x))) {
-		printf("x\n");
+		//printf("x\n");
 		return;
 	}
 	else if(!(diag(board, c_y, c_x, m_y, m_x))) {
-		printf("diag\n");
+		//printf("diag\n");
 		return;
 	}
 	else if(!(idle(board, c_y, c_x, m_y, m_x))) {
-		printf("idle\n");
+		//printf("idle\n");
 		return;
 	}
 	else {
 		def(board, c_y, c_x, m_y, m_x);
-		printf("def\n");
+		//printf("def\n");
 		return;
 	}
 }
