@@ -1,9 +1,5 @@
 objectifs :
 
-lire différentes maps rectangulaires dans maps/
-
-mouche qui fuit
-
-joueur qui se déplace
-
-...
+- nombre de coups
+- garder en mémoire pour avoir un meilleur score
+- le son
