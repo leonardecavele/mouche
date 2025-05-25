@@ -6,3 +6,4 @@ objectifs :
 
 - réagir avec les murs
 - identifier le coin avec - et | au lieu de coordonnées
+- checker leaks
