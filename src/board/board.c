@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <windows.h>
 #include "board.h"
+#include "score.h"
 
 void flush_input_buffer()
 {
@@ -39,7 +40,8 @@ void print_board(int height, int width, char **data)
             printf("\r");
             for(int j = 0; j < width; j++)
                 printf("%c", data[i][j]);
-			printf("\n");
+			printf("\n");	
         }
+		printf("[%s] Map %d - Moves: %d", new_player, new_score_count, new_move_count++);
 	fflush(stdout);
 }

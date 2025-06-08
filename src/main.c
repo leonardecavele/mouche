@@ -11,10 +11,14 @@ int main(void)
 	srand(time(NULL));
 	BRD board;
 
+	parse_score();
+
+	reset_board();
     if (!parse_map(&board)) {
         fprintf(stderr, "Parsing Error. Check map validity\n");
         return (1);
     }
+	print_board(board.height, board.width, board.data);
 
 	char c;
 	while((c = getch()) != 27)
