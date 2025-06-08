@@ -1,4 +1,4 @@
-# Nom de l'exécutable final
+# Nom de l'exécutable
 NAME = mouche
 
 # Compilateur
@@ -6,23 +6,15 @@ CC = gcc
 
 # Dossiers
 SRC_DIR = src
-CHAR_DIR = $(SRC_DIR)/character
 INC_DIR = include
 
-# Fichiers sources
-SRCS = $(SRC_DIR)/main.c \
-	   $(SRC_DIR)/board.c \
-       $(SRC_DIR)/character.c \
-	   $(SRC_DIR)/mouche.c \
-	   $(SRC_DIR)/parsing/get_next_line.c \
-	   $(SRC_DIR)/parsing/is_valid_map.c \
-	   $(SRC_DIR)/parsing/parsing.c \
-	   $(SRC_DIR)/parsing/utils.c \
+# Tous les .c dans src/ et sous-dossiers
+SRCS = $(shell find $(SRC_DIR) -name "*.c")
 
-# Fichiers objets
+# Objets
 OBJS = $(SRCS:.c=.o)
 
-# Flags de compilation
+# Flags
 CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR)
 
 # Règle par défaut
@@ -31,13 +23,15 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -o $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
+# Pour nettoyer les fichiers objets
 clean:
 	rm -f $(OBJS)
 
+# Pour nettoyer tout (exécutable + objets)
 fclean: clean
 	rm -f $(NAME)
 
+# Pour recompiler proprement
 re: fclean all
+
+.PHONY: all clean fclean re
