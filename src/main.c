@@ -13,10 +13,12 @@ int main(void)
 
 	parse_score();
 
+	char path[] = "./maps/map1.txt";
+
 	reset_board();
-    if (!parse_map(&board)) {
+    if (!parse_map(&board, path)) {
         fprintf(stderr, "Parsing Error. Check map validity\n");
-        return (1);
+        return 1;
     }
 	print_board(board.height, board.width, board.data);
 
@@ -29,7 +31,7 @@ int main(void)
 		reset_board();
 		print_board(board.height, board.width, board.data);
 		if (!win_con)
-			win();
+			win(path, &c, &board);
 	}
-	reset_board();
+	win(path, &c, &board);
 }

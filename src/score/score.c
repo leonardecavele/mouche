@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <ctype.h>
-#include "score.h"
-#include "board.h"
+#include "project.h"
 
 char new_player[4];
 int new_move_count = 0;
@@ -13,10 +12,32 @@ char best_player[4];
 int best_move_count = 0;
 int best_score_count = 0;
 
-void win()
+void win(char *path, char *c, BRD *board)
 {
-	anim();
-	write_score();
+	if(*c != 27)
+	{
+		int i, a;
+		for(i = 0; path[i] < '0' || path[i] > '9'; i++);
+		a = path[i] - '0';
+		path[i] = (++a + '0');
+
+		FILE *test = fopen(path, "r");
+		if(test)
+		{
+			fclose(test);
+			reset_board();
+			if (!parse_map(board, path))
+			{
+				fprintf(stderr, "Parsing Error. Check map validity\n");
+				exit(1);
+			}
+			new_score_count++;
+			print_board(board->height, board->width, board->data);
+			return;
+		}
+		anim();
+	}
+	write_score(c);
 	exit(0);
 }
 
@@ -56,8 +77,13 @@ void read_score(FILE *score)
 	Sleep(3500);
 }
 
-void write_score()
+void write_score(char *c)
 {
+	reset_board();
+
+	if(*c == 27)
+		new_score_count--;
+
 	if(new_score_count > best_score_count)
 		goto write;
 	else if(new_score_count == best_score_count && new_move_count < best_move_count)
@@ -65,16 +91,30 @@ void write_score()
 	return;
 
 	write:
+		int status = 1;
+		FILE *test = fopen(".score.txt", "r");
+		if(test)
+			status = 0;
+
 		FILE *new_file = fopen(".hscore.txt", "w");
 		fprintf(new_file, "%s\n%d\n%d", new_player, --new_move_count, new_score_count);
-		fclose(new_file);
 
-		reset_board();
-		printf("congratulations, you beat %s", best_player);
-		if(new_score_count == best_score_count)
-			printf(" with %d less move(s)", best_move_count - new_move_count);
-		else if(new_score_count > best_score_count)
-			printf(" with %d more level(s) done", new_score_count - best_score_count);
+		if(!SetFileAttributes(".hscore.txt", FILE_ATTRIBUTE_HIDDEN))
+			perror("SetFileAttributes failed");
+		fclose(new_file);
+		
+		if(status)
+		{
+			printf("you're the first one to beat the game!");
+		}
+		else
+		{
+			printf("congratulations, you beat %s", best_player);
+			if(new_score_count == best_score_count)
+				printf(" with %d less move(s)", best_move_count - new_move_count);
+			else if(new_score_count > best_score_count)
+				printf(" with %d more level(s) done", new_score_count - best_score_count);
+		}
 		Sleep(3500);
 		reset_board();
 }

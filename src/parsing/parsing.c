@@ -28,11 +28,11 @@ char    **read_map(BRD *board, int fd)
     return (map);
 }
 
-int    parse_map(BRD *board)
+int    parse_map(BRD *board, const char *path)
 {
     int     fd;
 
-    if ((fd = open(MAP_PATH, O_RDONLY)) == -1)
+    if ((fd = open(path, O_RDONLY)) == -1)
         return(0);
     board->data = read_map(board, fd);
     close(fd);

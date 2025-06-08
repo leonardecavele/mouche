@@ -9,10 +9,10 @@ extern char best_player[4];
 extern int best_move_count;
 extern int best_score_count;
 
-void win();
+void win(char *path, char *c, BRD *board);
 void parse_score();
 void read_score(FILE *score);
-void write_score();
+void write_score(char *c);
 void get_name();
 void to_upper(char *str);
 

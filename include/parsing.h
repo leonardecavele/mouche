@@ -8,8 +8,6 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#define MAP_PATH "./maps/map1.txt"
-
 //get_next_line
 void    *error(char *ret);
 char    *get_next_line(int fd);
@@ -21,7 +19,7 @@ int     is_valid_map(BRD *board, char **map);
 //parsing
 char    **realloc_map(char **map, int nbrlines);
 char    **read_map(BRD *board, int fd);
-int    parse_map(BRD *board);
+int    parse_map(BRD *board, const char *path);
 //utils
 int     is_white_space(char c);
 int     is_empty_line(char *str);
