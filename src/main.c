@@ -40,6 +40,7 @@ void win() //todo
 
 int main(void)
 {
+	reset_board();
 	srand(time(NULL));
 	BRD board;
 
@@ -54,7 +55,7 @@ int main(void)
 		mouche(&board, c);
 		int win_con = get_input(&board, c);
 		flush_input_buffer();
-		reset_board(board.height);
+		reset_board();
 		print_board(board.height, board.width, board.data);
 		if (!win_con)
 			win();

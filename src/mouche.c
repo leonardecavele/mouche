@@ -176,34 +176,39 @@ int x_axis(BRD *board, int c_y, int c_x, int m_y, int m_x)
 int corner(BRD *board, int c_y, int c_x, int m_y, int m_x)
 {
     int dx = 0, dy = 0;
+	int r = rand() % 5;
 
     if (m_y == 1 && m_x == 1) //haut gauche
     {
-        if (c_y <= m_y && c_x <= m_x) { dx = 1; dy = 1; }
+		if(r == 0) { dx = 1; dy = 1; }
+		else if (c_y <= m_y && c_x <= m_x) { dx = 1; dy = 1; }
         else if (c_y <= m_y) { dy = 1; }
         else if (c_x <= m_x) { dx = 1; }
-        else { dx = 1; dy = 1; }
+        else { dx = 0; dy = 0; }
     }
     else if (m_y == 1 && m_x == board->width - 2) //haut droite
     {
-        if (c_y <= m_y && c_x >= m_x) { dx = -1; dy = 1; }
+		if(r == 0) { dx = -1; dy = 1; }
+		else if (c_y <= m_y && c_x >= m_x) { dx = -1; dy = 1; }
         else if (c_y <= m_y) { dy = 1; }
         else if (c_x >= m_x) { dx = -1; }
-        else { dx = -1; dy = 1; }
+        else { dx = 0; dy = 0; }
     }
     else if (m_y == board->height - 2 && m_x == 1) //bas gauche
     {
-        if (c_y >= m_y && c_x <= m_x) { dx = 1; dy = -1; }
+		if(r == 0) { dx = 1; dy = -1; }
+		else if (c_y >= m_y && c_x <= m_x) { dx = 1; dy = -1; }
         else if (c_y >= m_y) { dy = -1; }
         else if (c_x <= m_x) { dx = 1; }
-        else { dx = 1; dy = -1; }
+        else { dx = 0; dy = 0; }
     }
     else if (m_y == board->height - 2 && m_x == board->width - 2) //bas droite
     {
-        if (c_y >= m_y && c_x >= m_x) { dx = -1; dy = -1; }
+		if(r == 0) { dx = -1; dy = -1; }
+		else if (c_y >= m_y && c_x >= m_x) { dx = -1; dy = -1; }
         else if (c_y >= m_y) { dy = -1; }
         else if (c_x >= m_x) { dx = -1; }
-        else { dx = -1; dy = -1; }
+        else { dx = 0; dy = 0; }
     }
     else {
         return 1; //pas dans un coin

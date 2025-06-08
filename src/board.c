@@ -3,10 +3,13 @@
 
 void reset_board()
 {
-	printf("\033[H\033[J");
+#ifdef _WIN32
+    system("cls");
+#else
+    printf("\033[H\033[J");
     fflush(stdout);
+#endif
 }
-
 void print_board(int height, int width, char **data)
 {
 	for(int i = 0; i < height; i++)
