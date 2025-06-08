@@ -15,8 +15,8 @@ int best_score_count = 0;
 
 void win()
 {
-	write_score();
 	anim();
+	write_score();
 	exit(0);
 }
 
@@ -66,8 +66,17 @@ void write_score()
 
 	write:
 		FILE *new_file = fopen(".hscore.txt", "w");
-		fprintf(new_file, "%s\n%d\n%d\n", new_player, new_move_count - 1, new_score_count);
+		fprintf(new_file, "%s\n%d\n%d", new_player, --new_move_count, new_score_count);
 		fclose(new_file);
+
+		reset_board();
+		printf("congratulations, you beat %s", best_player);
+		if(new_score_count == best_score_count)
+			printf(" with %d less move(s)", best_move_count - new_move_count);
+		else if(new_score_count > best_score_count)
+			printf(" with %d more level(s) done", new_score_count - best_score_count);
+		Sleep(3500);
+		reset_board();
 }
 
 void get_name()
