@@ -1,11 +1,107 @@
 #include <stdlib.h>
+#include <stdio.h>
+#include <windows.h>
+#include <ctype.h>
 #include "score.h"
 #include "board.h"
 
+char new_player[4];
+int new_move_count = 0;
+int new_score_count = 1;
+
+char best_player[4];
+int best_move_count = 0;
+int best_score_count = 0;
+
 void win()
 {
+	write_score();
 	anim();
 	exit(0);
 }
 
+void parse_score()
+{
+	FILE *score = fopen(".hscore.txt", "r");
 
+	if(score)
+	{
+		read_score(score);
+		fclose(score);
+	}
+	get_name();
+}
+
+void read_score(FILE *score)
+{
+	char buffer[10];
+	int c, i;
+	
+	for(i = 0; (c = fgetc(score)) != EOF && c != '\n' && c >= 'A' && c <= 'Z'; i++)
+		best_player[i] = c;
+	best_player[i] = '\0';
+
+	for(i = 0; (c = fgetc(score)) != EOF && c!= '\n' && c >= '0' && c <= '9'; i++)
+		buffer[i] = c;
+	buffer[i] = '\0';
+	best_move_count = atoi(buffer);
+
+	for(i = 0; (c = fgetc(score)) != EOF && c!= '\n' && c >= '0' && c <= '9'; i++)
+		buffer[i] = c;
+	buffer[i] = '\0';
+	best_score_count = atoi(buffer);
+
+	reset_board();
+	printf("highest score is %d level(s), held by %s with %d moves", best_score_count, best_player, best_move_count);
+	Sleep(3500);
+}
+
+void write_score()
+{
+	if(new_score_count > best_score_count)
+		goto write;
+	else if(new_score_count == best_score_count && new_move_count < best_move_count)
+		goto write;
+	return;
+
+	write:
+		FILE *new_file = fopen(".hscore.txt", "w");
+		fprintf(new_file, "%s\n%d\n%d\n", new_player, new_move_count - 1, new_score_count);
+		fclose(new_file);
+}
+
+void get_name()
+{
+	int i, c;
+	wname:
+		reset_board();
+		printf("pick a three-letter name\n");
+		for(i = 0; i < 3; i++)
+		{
+			c = getchar();
+			if(c == '\n' || c == EOF)
+			{
+				reset_board();
+				printf("name too short");
+				Sleep(1000);
+				goto wname;
+			}
+			else if(c <= '9' && c >= '0')
+			{
+				reset_board();
+				printf("numbers are not accepted");
+				Sleep(1000);
+				goto wname;
+			}
+			new_player[i] = (char)c;
+		}
+		new_player[i] = '\0';
+		to_upper(new_player);
+		reset_board();
+}
+
+void to_upper(char *str)
+{
+    for(int i = 0; str[i]; i++)
+        str[i] = toupper((unsigned char)str[i]);
+}
