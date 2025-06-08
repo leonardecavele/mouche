@@ -1,55 +1,6 @@
 #include <stdlib.h>
-#include <stdio.h> //to remove
 #include "project.h"
-
-#define CHILL_VALUE 40
-#define FEAR_VALUE 20
-#define SUPER_FEAR 10
-#define MEGA_FEAR 5
-
-int move(BRD *board, int dx, int dy)
-{
-	int y = board->posmch[POSY];
-    int x = board->posmch[POSX];
-
-    int new_y = y + dy;
-    int new_x = x + dx;
-
-	if(test_move(board, new_x, new_y))
-		return 0;
-	
-	board->data[new_y][new_x] = '*';
-	board->data[y][x] = ' ';
-
-	board->posmch[POSX] = new_x;
-	board->posmch[POSY] = new_y;
-
-	return 1;
-}
-
-int test_move(BRD *board, int new_x, int new_y)
-{
-	if(new_x < 0 || new_x >= board->width || new_y < 0 || new_y >= board->height) {
-		return 1;
-	}
-
-	char target = board->data[new_y][new_x];
-    if(target != ' ') {
-        return 1;
-	}
-
-	return 0;
-}
-
-int range_calc(int c_y, int c_x, int m_y, int m_x)
-{
-	int y_higher = (c_y > m_y) ? c_y : m_y;
-	int y_lower = (c_y > m_y) ? m_y : c_y;
-	int x_higher = (c_x > m_x) ? c_x : m_x;
-	int x_lower = (c_x > m_x) ? m_x : c_x;
-
-	return (y_higher - y_lower) + (x_higher - x_lower);
-}
+#include "mouche.h"
 
 int idle(BRD *board, int c_y, int c_x, int m_y, int m_x)
 {
@@ -71,7 +22,7 @@ int idle(BRD *board, int c_y, int c_x, int m_y, int m_x)
 	{
 		int r = rand() % 2;
 		int r2 = (r == 0) ? 1 : 0;
-		new_x = (r == 0) ? (m_x - 1) : (m_x + 1); 
+		new_x = (r == 0) ? (m_x - 1) : (m_x + 1);
 		new_y = (r2 == 0) ? (m_y - 1) : (m_y + 1);
 	}
 
@@ -100,13 +51,13 @@ int y_axis(BRD *board, int c_y, int c_x, int m_y, int m_x)
     {
         if(c_x < m_x)
         {
-            new_op(&new_x, range, c_x, m_x);
+            new_offset(&new_x, range, c_x, m_x);
             if(move(board, new_x, 0))
                 return 0;
         }
         else if(c_x > m_x)
         {
-            new_op(&new_x, range, c_x, m_x);
+            new_offset(&new_x, range, c_x, m_x);
             if(move(board, new_x, 0))
                 return 0;
         }
@@ -121,7 +72,7 @@ int y_axis(BRD *board, int c_y, int c_x, int m_y, int m_x)
     return 1;
 }
 
-void new_op(int *new, int range, int cpos, int mpos)
+void new_offset(int *new, int range, int cpos, int mpos)
 {
     if(range < SUPER_FEAR)
     {
@@ -152,13 +103,13 @@ int x_axis(BRD *board, int c_y, int c_x, int m_y, int m_x)
     {
         if(c_y < m_y)
         {
-            new_op(&new_y, range, c_y, m_y);
+            new_offset(&new_y, range, c_y, m_y);
             if(move(board, 0, new_y))
                 return 0;
         }
         else if(c_y > m_y)
         {
-            new_op(&new_y, range, c_y, m_y);
+            new_offset(&new_y, range, c_y, m_y);
             if(move(board, 0, new_y))
                 return 0;
         }
@@ -181,33 +132,33 @@ int corner(BRD *board, int c_y, int c_x, int m_y, int m_x)
     if (m_y == 1 && m_x == 1) //haut gauche
     {
 		if(r == 0) { dx = 1; dy = 1; }
-		else if (c_y <= m_y && c_x <= m_x) { dx = 1; dy = 1; }
-        else if (c_y <= m_y) { dy = 1; }
-        else if (c_x <= m_x) { dx = 1; }
+		else if(c_y <= m_y && c_x <= m_x) { dx = 1; dy = 1; }
+        else if(c_y <= m_y) { dy = 1; }
+        else if(c_x <= m_x) { dx = 1; }
         else { dx = 0; dy = 0; }
     }
     else if (m_y == 1 && m_x == board->width - 2) //haut droite
     {
 		if(r == 0) { dx = -1; dy = 1; }
-		else if (c_y <= m_y && c_x >= m_x) { dx = -1; dy = 1; }
-        else if (c_y <= m_y) { dy = 1; }
-        else if (c_x >= m_x) { dx = -1; }
+		else if(c_y <= m_y && c_x >= m_x) { dx = -1; dy = 1; }
+        else if(c_y <= m_y) { dy = 1; }
+        else if(c_x >= m_x) { dx = -1; }
         else { dx = 0; dy = 0; }
     }
     else if (m_y == board->height - 2 && m_x == 1) //bas gauche
     {
 		if(r == 0) { dx = 1; dy = -1; }
-		else if (c_y >= m_y && c_x <= m_x) { dx = 1; dy = -1; }
-        else if (c_y >= m_y) { dy = -1; }
-        else if (c_x <= m_x) { dx = 1; }
+		else if(c_y >= m_y && c_x <= m_x) { dx = 1; dy = -1; }
+        else if(c_y >= m_y) { dy = -1; }
+        else if(c_x <= m_x) { dx = 1; }
         else { dx = 0; dy = 0; }
     }
     else if (m_y == board->height - 2 && m_x == board->width - 2) //bas droite
     {
 		if(r == 0) { dx = -1; dy = -1; }
-		else if (c_y >= m_y && c_x >= m_x) { dx = -1; dy = -1; }
-        else if (c_y >= m_y) { dy = -1; }
-        else if (c_x >= m_x) { dx = -1; }
+		else if(c_y >= m_y && c_x >= m_x) { dx = -1; dy = -1; }
+        else if(c_y >= m_y) { dy = -1; }
+        else if(c_x >= m_x) { dx = -1; }
         else { dx = 0; dy = 0; }
     }
     else {
@@ -281,57 +232,5 @@ int def(BRD *board, int c_y, int c_x, int m_y, int m_x)
 
     if (move(board, dx, dy)) return 0;
 
-    return 1;
-}
-
-void mouche(BRD *board, char c)
-{
-	int c_y = board->poschar[POSY];
-	int c_x = board->poschar[POSX];
-
-	if(c == 'q')
-	{
-		c_x = board->poschar[POSX] - 1;
-	}
-	else if(c == 'd')
-	{
-		c_x = board->poschar[POSX] + 1;
-	}
-	else if(c == 'z')
-	{
-		c_y = board->poschar[POSY] - 1;
-	}
-	else if(c == 's')
-	{
-		c_y = board->poschar[POSY] + 1;
-	}
-
-	int m_y = board->posmch[POSY];
-	int m_x = board->posmch[POSX];
-
-	if(!(corner(board, c_y, c_x, m_y, m_x))) {
-		//printf("corner\n");
-		return;
-	}
-	else if(!(y_axis(board, c_y, c_x, m_y, m_x))) {
-		//printf("y\n");
-		return;
-	}
-	else if(!(x_axis(board, c_y, c_x, m_y, m_x))) {
-		//printf("x\n");
-		return;
-	}
-	else if(!(diag(board, c_y, c_x, m_y, m_x))) {
-		//printf("diag\n");
-		return;
-	}
-	else if(!(idle(board, c_y, c_x, m_y, m_x))) {
-		//printf("idle\n");
-		return;
-	}
-	else {
-		def(board, c_y, c_x, m_y, m_x);
-		//printf("def\n");
-		return;
-	}
+	return 1;
 }

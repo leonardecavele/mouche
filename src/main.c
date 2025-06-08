@@ -5,39 +5,6 @@
 #include <windows.h>
 #include "project.h"
 
-int parse_map(BRD *board); //to do
-
-void flush_input_buffer(); //todo
-
-void anim(); //todo
-
-void win(); //todo
-
-void flush_input_buffer() //todo
-{
-    while (_kbhit()) getch();
-}
-
-void anim() //tdoo
-{
-	reset_board();
-	for(int i = 0; i < 4; i++)
-	{
-		if (i % 2 == 0)
-			printf("\033[32mGG!\033[0m");
-		else
-			printf("\r\033[2K");
-		fflush(stdout);
-		Sleep(300);
-	}
-}
-
-void win() //todo
-{
-	anim();
-	exit(0);
-}
-
 int main(void)
 {
 	reset_board();

@@ -17,5 +17,6 @@ typedef struct
 #include "board.h"
 #include "mouche.h"
 #include "parsing.h"
+#include "score.h"
 
 #endif
