@@ -1,6 +1,8 @@
-#include <stdlib.h>
 #include "project.h"
 #include "mouche.h"
+
+#include <stdio.h>
+#include <windows.h>
 
 void mouche(BRD *board, char c)
 {
@@ -27,29 +29,20 @@ void mouche(BRD *board, char c)
 	int m_y = board->posmch[POSY];
 	int m_x = board->posmch[POSX];
 
-	if(!(corner(board, c_y, c_x, m_y, m_x))) {
-		//printf("corner\n");
+	if(!(idle(board, c_y, c_x, m_y, m_x)))
+	{
+		printf("idle");
 		return;
 	}
-	else if(!(y_axis(board, c_y, c_x, m_y, m_x))) {
-		//printf("y\n");
+	else if(!(corner(board, c_y, c_x, m_y, m_x)))
 		return;
-	}
-	else if(!(x_axis(board, c_y, c_x, m_y, m_x))) {
-		//printf("x\n");
+	else if(!(y_axis(board, c_y, c_x, m_y, m_x)))
 		return;
-	}
-	else if(!(diag(board, c_y, c_x, m_y, m_x))) {
-		//printf("diag\n");
+	else if(!(x_axis(board, c_y, c_x, m_y, m_x)))
 		return;
-	}
-	else if(!(idle(board, c_y, c_x, m_y, m_x))) {
-		//printf("idle\n");
-		return;
-	}
-	else {
+	else 
+	{
 		def(board, c_y, c_x, m_y, m_x);
-		//printf("def\n");
 		return;
 	}
 }

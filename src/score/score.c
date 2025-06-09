@@ -74,7 +74,7 @@ void read_score(FILE *score)
 
 	reset_board();
 	printf("highest score is %d level(s), held by %s with %d moves", best_score_count, best_player, best_move_count);
-	Sleep(3500);
+	Sleep(2500);
 }
 
 void write_score(char *c)
@@ -91,12 +91,22 @@ void write_score(char *c)
 	return;
 
 	write:
+		
+		SetFileAttributes(".hscore.txt", FILE_ATTRIBUTE_NORMAL);
+
 		int status = 1;
-		FILE *test = fopen(".score.txt", "r");
+		FILE *test = fopen(".hscore.txt", "r");
 		if(test)
 			status = 0;
+		fclose(test);
 
 		FILE *new_file = fopen(".hscore.txt", "w");
+		if(!new_file)
+		{
+			perror("fopen for write failed");
+			return;
+		}
+
 		fprintf(new_file, "%s\n%d\n%d", new_player, --new_move_count, new_score_count);
 
 		if(!SetFileAttributes(".hscore.txt", FILE_ATTRIBUTE_HIDDEN))
@@ -105,7 +115,7 @@ void write_score(char *c)
 		
 		if(status)
 		{
-			printf("you're the first one to beat the game!");
+			printf("you're the first to play the game on this computer");
 		}
 		else
 		{
@@ -115,7 +125,7 @@ void write_score(char *c)
 			else if(new_score_count > best_score_count)
 				printf(" with %d more level(s) done", new_score_count - best_score_count);
 		}
-		Sleep(3500);
+		Sleep(2500);
 		reset_board();
 }
 

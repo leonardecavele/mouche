@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
-#include "board.h"
-#include "score.h"
+#include "project.h"
 
 void flush_input_buffer()
 {
