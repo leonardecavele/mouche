@@ -16,15 +16,16 @@ void    count_spechar(BRD *board, char *str, int refline, int *nbrchar, int *nbr
     }
 }
 
-int     is_line_valid(char *str, int width)
+int is_line_valid(char *str, int width)
 {
     if (str[0] != '|' || str[width - 1] != '|')
         return (0);
     for (int i = 1; i < (width - 1); i++)
-        if (str[i] != ' ' && str[i] != '#' && str[i] != '*')
+        if (str[i] != ' ' && str[i] != '#' && str[i] != '*' && str[i] != '-' && str[i] != '|')
             return (0);
     return (1);
 }
+
 
 int     is_minus_only(char *str)
 {
