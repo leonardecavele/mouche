@@ -30,10 +30,7 @@ void mouche(BRD *board, char c)
 	int m_x = board->posmch[POSX];
 
 	if(!(idle(board, c_y, c_x, m_y, m_x)))
-	{
-		printf("idle");
 		return;
-	}
 	else if(!(corner(board, c_y, c_x, m_y, m_x)))
 		return;
 	else if(!(y_axis(board, c_y, c_x, m_y, m_x)))

@@ -41,6 +41,6 @@ void print_board(int height, int width, char **data)
                 printf("%c", data[i][j]);
 			printf("\n");	
         }
-		printf("[%s] Map %d - Moves: %d", new_player, new_score_count, new_move_count++);
+		printf("[%s] Map %d - Moves: %d\n", new_player, new_score_count, new_move_count++);
 	fflush(stdout);
 }
